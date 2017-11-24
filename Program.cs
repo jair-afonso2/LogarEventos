@@ -32,6 +32,7 @@ namespace SysLog
                         System.Console.Write("\nSenha: ");
                         string senha = Console.ReadLine();
                         string Senha = encriptSenha(senha);
+                        Login login = new Login(Senha);
 
                         StreamReader arquivo = new StreamReader("CadUsuario.txt", Encoding.Default);
                         string linha = "";
@@ -40,7 +41,11 @@ namespace SysLog
                         {
                             string[] dados = linha.Split(';');
                             if (dados[1] == Senha)
+                            {
                                 System.Console.WriteLine("\nLogado.");
+                                login.Log += new Login.Evento(metodo);
+                                login.Logar();
+                            }
                             else
                                 System.Console.WriteLine("\nSenha Errada.");
                         }
@@ -75,5 +80,9 @@ namespace SysLog
             return Convert.ToBase64String(senhaModificada);
         }
 
+        static void metodo()
+        {
+            System.Console.WriteLine("Evento...");
+        }
     }
 }
